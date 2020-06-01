@@ -29,7 +29,7 @@ jobs:
          - name: Cloud One Container Scan DockerHub
            uses: felipecosta09/Deep-Security-Smart-Check-Scan-Action@1.0.1
            with:
-              DSSC_IMAGE_NAME: felipecosta09/myapp
+              DSSC_IMAGE_NAME: felipecosta09/myapp:latest
               DSSC_SMARTCHECK_HOST: a65d597b6a3f911ea80860ee2b859e57-1778246550.us-east-1.elb.amazonaws.com
               DSSC_SMARTCHECK_USER: administrator
               DSSC_SMARTCHECK_PASSWORD: 3b5963b4f46297cff9980753eac0d0
