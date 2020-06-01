@@ -1,0 +1,39 @@
+name: Trend-Micro-Container-Security-for-CI-CD
+
+
+on: 
+  push:
+    branches: 
+      - master
+
+jobs:
+    Build_and_Push:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          # Container Build
+          - name: Container Build
+            run : docker build -t myapp:latest .
+          # Container Push
+          - name: DockerHub Login
+            run: docker login --username felipecosta09 --password ${{ secrets.DOCKERHUB }}
+          - name: Tag Docker Image
+            run: docker tag myapp felipecosta09/myapp:latest
+          - name: Push Docker Images to DockerHub
+            run: docker push felipecosta09/myapp:latest
+    Container_Scan:
+       runs-on: ubuntu-latest
+       needs: [Build_and_Push]
+       steps:
+         # Container Scan
+         - name: Cloud One Container Scan DockerHub
+           uses: felipecosta09/Deep-Security-Smart-Check-Scan-Action@v1.0.1
+           with:
+              DSSC_IMAGE_NAME: felipecosta09/myapp
+              DSSC_SMARTCHECK_HOST: ${{ secrets.DSSC_SMARTCHECK_HOST }}
+              DSSC_SMARTCHECK_USER: ${{ secrets.DSSC_SMARTCHECK_USER }}
+              DSSC_SMARTCHECK_PASSWORD: ${{ secrets.DSSC_SMARTCHECK_PASSWORD }}
+              DSSC_IMAGE_PULL_AUTH: '{"username": "felipecosta09","password": "${{ secrets.DOCKERHUB }}"}'
+              DSSC_FINDINGS_THRESHOLD: '{"malware": 10, "vulnerabilities": { "defcon1": 10, "critical": 10, "high": 10 }, "contents": { "defcon1": 10, "critical": 10, "high": 10 }, "checklists": { "defcon1": 10, "critical": 10, "high": 10 }}'
+              DSSC_INSECURE_SKIP_TLS_VERIFY: true
+              DSSC_INSECURE_SKIP_REGISTRY_TLS_VERIFY: true
