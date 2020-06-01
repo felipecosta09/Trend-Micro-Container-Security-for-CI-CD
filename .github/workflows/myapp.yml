@@ -6,10 +6,6 @@ on:
     branches: 
       - master
 
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 jobs:
     Build_and_Push:
         runs-on: ubuntu-latest
@@ -35,14 +31,14 @@ jobs:
        needs: [Build_and_Push]
        steps:
          # Container Scan
-         - name: Cloud One Container Scan DockerHub
+         - name: Cloud One Container Scan in AWS ECR
            uses: felipecosta09/Deep-Security-Smart-Check-Scan-Action@1.0.1
            with:
               DSSC_IMAGE_NAME: 650143975734.dkr.ecr.us-east-1.amazonaws.com/myapp:latest
-              DSSC_SMARTCHECK_HOST: a65d597b6a3f911ea80860ee2b859e57-1778246550.us-east-1.elb.amazonaws.com
-              DSSC_SMARTCHECK_USER: administrator
-              DSSC_SMARTCHECK_PASSWORD: 3b5963b4f46297cff9980753eac0d0
+              DSSC_SMARTCHECK_HOST: ${{ secrets.DSSC_SMARTCHECK_HOST }}
+              DSSC_SMARTCHECK_USER: ${{ secrets.DSSC_SMARTCHECK_USER }}
+              DSSC_SMARTCHECK_PASSWORD: ${{ secrets.DSSC_SMARTCHECK_PASSWORD }}
               DSSC_IMAGE_PULL_AUTH: ${{ secrets.DSSC_IMAGE_PULL_AUTH }}
-              DSSC_FINDINGS_THRESHOLD: '{"malware": 10, "vulnerabilities": { "defcon1": 10, "critical": 10, "high": 10 }, "contents": { "defcon1": 10, "critical": 10, "high": 10 }, "checklists": { "defcon1": 10, "critical": 10, "high": 10 }}'
+              DSSC_FINDINGS_THRESHOLD: ${{ secrets.DSSC_FINDINGS_THRESHOLD }}
               DSSC_INSECURE_SKIP_TLS_VERIFY: true
               DSSC_INSECURE_SKIP_REGISTRY_TLS_VERIFY: true
