@@ -30,9 +30,9 @@ jobs:
            uses: felipecosta09/Deep-Security-Smart-Check-Scan-Action@1.0.1
            with:
               DSSC_IMAGE_NAME: felipecosta09/myapp
-              DSSC_SMARTCHECK_HOST: ${{ secrets.DSSC_SMARTCHECK_HOST }}
-              DSSC_SMARTCHECK_USER: ${{ secrets.DSSC_SMARTCHECK_USER }}
-              DSSC_SMARTCHECK_PASSWORD: ${{ secrets.DSSC_SMARTCHECK_PASSWORD }}
+              DSSC_SMARTCHECK_HOST: a65d597b6a3f911ea80860ee2b859e57-1778246550.us-east-1.elb.amazonaws.com
+              DSSC_SMARTCHECK_USER: administrator
+              DSSC_SMARTCHECK_PASSWORD: 3b5963b4f46297cff9980753eac0d0
               DSSC_IMAGE_PULL_AUTH: '{"username": "felipecosta09","password": "${{ secrets.DOCKERHUB }}"}'
               DSSC_FINDINGS_THRESHOLD: '{"malware": 10, "vulnerabilities": { "defcon1": 10, "critical": 10, "high": 10 }, "contents": { "defcon1": 10, "critical": 10, "high": 10 }, "checklists": { "defcon1": 10, "critical": 10, "high": 10 }}'
               DSSC_INSECURE_SKIP_TLS_VERIFY: true
